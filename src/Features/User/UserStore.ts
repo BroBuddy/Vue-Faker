@@ -38,9 +38,45 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    const addUser = async (body: { firstName: string; lastName: string }) => {
+        try {
+            const response = await fetch('https://dummyjson.com/users/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            })
+
+            const data = await response.json()
+
+            if (data) {
+                users.value = users.value
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const removeUser = async (userId: string) => {
+        try {
+            const response = await fetch(`${API_PATH}/users/${userId}`, {
+                method: 'DELETE',
+            })
+
+            const data = await response.json()
+
+            if (data.isDeleted) {
+                users.value = users.value.filter((user) => user.id !== userId)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return {
         users,
         getAllUsers,
         getUserById,
+        addUser,
+        removeUser,
     }
 })

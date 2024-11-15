@@ -11,6 +11,10 @@ const users = computed(() => {
     return userStore.users
 })
 
+const deleteUser = async (userId: string) => {
+    userStore.removeUser(userId)
+}
+
 onMounted(() => {
     userStore.getAllUsers()
 })
@@ -18,7 +22,12 @@ onMounted(() => {
 
 <template>
     <div v-if="users">
-        <Header>{{ users?.length ?? '0' }} User(s)</Header>
+        <Header
+            >{{ users?.length ?? '0' }} User(s)
+            <router-link to="/user/add"
+                ><Badge color="green">+</Badge></router-link
+            ></Header
+        >
 
         <div class="px-10">
             <ul role="list" class="divide-y divide-gray-100">
@@ -37,6 +46,12 @@ onMounted(() => {
                         <div class="min-w-0 flex-auto">
                             <p class="text-sm/6 font-semibold text-gray-900">
                                 {{ user.firstName }} {{ user.lastName }}
+                                <Badge
+                                    class="cursor"
+                                    color="red"
+                                    @click="deleteUser(user.id)"
+                                    >X</Badge
+                                >
                             </p>
                             <p class="mt-1 truncate text-xs/5 text-gray-500">
                                 {{ user.company?.title }}

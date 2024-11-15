@@ -42,9 +42,25 @@ export const usePostStore = defineStore('post', () => {
         }
     }
 
+    const removePost = async (postId: string) => {
+        try {
+            const response = await fetch(`${API_PATH}/posts/${postId}`, {
+                method: 'DELETE',
+            })
+            const data = await response.json()
+
+            if (data.isDeleted) {
+                posts.value = posts.value.filter((post) => post.id !== postId)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return {
         posts,
         getPostsByQuery,
         getPostById,
+        removePost,
     }
 })

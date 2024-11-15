@@ -11,6 +11,7 @@ import PostListing from './Features/Post/PostListing.vue'
 import UserListing from './Features/User/UserListing.vue'
 import UserDetail from './Features/User/UserDetail.vue'
 import TagPosts from './Features/Tag/TagPosts.vue'
+import UserAdd from './Features/User/UserAdd.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -20,6 +21,7 @@ const router = createRouter({
         { path: '/post/:id', component: PostDetail },
         { path: '/user', component: UserListing },
         { path: '/user/:id', component: UserDetail },
+        { path: '/user/add', component: UserAdd },
         { path: '/tag/:id', component: TagPosts },
     ],
 })

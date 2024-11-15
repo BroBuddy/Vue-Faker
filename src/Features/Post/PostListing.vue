@@ -16,6 +16,10 @@ const fetchData = (postId: string) => {
     postStore.getPostsByQuery(postId)
 }
 
+const deletePost = async (postId: string) => {
+    postStore.removePost(postId)
+}
+
 watch(
     () => query.value,
     (postId, _) => {
@@ -61,9 +65,13 @@ onMounted(() => {
 
                         <div class="min-w-0 flex-auto">
                             <p class="text-sm/6 font-semibold text-gray-900">
-                                <router-link :to="`/post/${post.id}`">{{
-                                    post.title
-                                }}</router-link>
+                                {{ post.title }}
+                                <Badge
+                                    class="cursor"
+                                    color="red"
+                                    @click="deletePost(post.id)"
+                                    >X</Badge
+                                >
                             </p>
                             <p
                                 class="flex gap-2 mt-1 truncate text-xs/5 text-gray-500"
@@ -79,9 +87,7 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <div
-                        class="hidden shrink-0 sm:flex sm:flex-col sm:items-end"
-                    >
+                    <div class="flex flex-col items-end">
                         <div class="flex text-sm/6 gap-2">
                             <Badge color="green"
                                 >+ {{ post.reactions?.likes }}</Badge
