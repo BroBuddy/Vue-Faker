@@ -16,7 +16,9 @@ const deleteUser = async (userId: string) => {
 }
 
 onMounted(() => {
-    userStore.getAllUsers()
+    if (userStore.users.length === 0) {
+        userStore.getAllUsers()
+    }
 })
 </script>
 
@@ -36,17 +38,26 @@ onMounted(() => {
                     v-for="user in users"
                 >
                     <div class="flex min-w-0 gap-x-4">
-                        <router-link :to="`/user/${user.id}`"
+                        <router-link
+                            v-if="user.birthDate"
+                            :to="`/user/${user.id}`"
                             ><img
                                 class="h-12 w-12 flex-none rounded-full bg-gray-50"
                                 :src="user.image"
                                 alt=""
                         /></router-link>
+                        <img
+                            v-else
+                            class="h-12 w-12 flex-none rounded-full bg-gray-50"
+                            :src="user.image"
+                            alt=""
+                        />
 
                         <div class="min-w-0 flex-auto">
                             <p class="text-sm/6 font-semibold text-gray-900">
                                 {{ user.firstName }} {{ user.lastName }}
                                 <Badge
+                                    v-if="user.birthDate"
                                     class="cursor"
                                     color="red"
                                     @click="deleteUser(user.id)"
@@ -63,7 +74,9 @@ onMounted(() => {
                         class="hidden shrink-0 sm:flex sm:flex-col sm:items-end"
                     >
                         <div class="flex text-sm/6 gap-2">
-                            <Badge>{{ capitalizeText(user.role) }}</Badge>
+                            <Badge v-if="user.role">{{
+                                capitalizeText(user.role)
+                            }}</Badge>
                         </div>
                     </div>
                 </li>

@@ -49,7 +49,7 @@ export const useUserStore = defineStore('user', () => {
             const data = await response.json()
 
             if (data) {
-                users.value = users.value
+                users.value.unshift(data)
             }
         } catch (error) {
             console.error(error)
