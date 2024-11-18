@@ -3,6 +3,8 @@ import { API_PATH } from '../../constants'
 import { ref } from 'vue'
 import { User } from '../../types'
 
+type UserBody = { firstName: string; lastName: string; image: string }
+
 export const useUserStore = defineStore('user', () => {
     const users = ref<User[]>([])
 
@@ -38,9 +40,9 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    const addUser = async (body: { firstName: string; lastName: string }) => {
+    const addUser = async (body: UserBody) => {
         try {
-            const response = await fetch('https://dummyjson.com/users/add', {
+            const response = await fetch(`${API_PATH}/users/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
