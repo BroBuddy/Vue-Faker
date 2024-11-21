@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router'
 import { API_PATH } from '../../constants'
 
 const userStore = useUserStore()
-const router = useRouter()
 
 const addForm = {
     firstName: ref<string>(''),
@@ -30,7 +29,8 @@ const changeForm = (field: string, value: string) => {
 }
 
 const cancelForm = () => {
-    router.push('/user')
+    const router = useRouter()
+    router?.push('/user')
 }
 
 const submitForm = () => {
@@ -44,8 +44,6 @@ const submitForm = () => {
     }
 
     userStore.addUser(formBody)
-
-    cancelForm()
 }
 </script>
 
@@ -53,7 +51,7 @@ const submitForm = () => {
     <Header>Add new user</Header>
 
     <div class="px-10">
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="() => submitForm()">
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div class="sm:col-span-3">
                     <FormInput
