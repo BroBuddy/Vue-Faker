@@ -4,6 +4,7 @@ import FormInput from '../../components/FormInput.vue'
 import Header from '../../components/Header.vue'
 import { useUserStore } from './UserStore'
 import { useRouter } from 'vue-router'
+import { API_PATH } from '../../constants'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -38,7 +39,7 @@ const submitForm = () => {
     const formBody = {
         firstName: firstName.value,
         lastName: lastName.value,
-        image: 'https://dummyjson.com/icon/' + userAlias + '/128',
+        image: `${API_PATH}/icon/${userAlias}/128`,
         company: { title: jobTitle.value },
     }
 
