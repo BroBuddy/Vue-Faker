@@ -15,7 +15,7 @@ const addForm = {
     jobTitle: ref<string>(''),
 }
 
-const changeForm = (value: string, field: string) => {
+const changeForm = (field: string, value: string) => {
     switch (field) {
         case 'firstName':
             addForm.firstName.value = value
@@ -61,7 +61,7 @@ const submitForm = () => {
                         name="firstName"
                         v-model="addForm.firstName.value"
                         :value="addForm.firstName.value"
-                        @onChange="($event) => changeForm($event, 'firstName')"
+                        @onChange="($event) => changeForm('firstName', $event)"
                         placeholder=""
                     />
                 </div>

@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ref } from 'vue'
-import { mount } from '@vue/test-utils'
-import UserAdd from '../UserAdd.vue'
 
 const pinia = createPinia()
 setActivePinia(pinia)
@@ -13,10 +11,19 @@ const addForm = {
     jobTitle: ref<string>(''),
 }
 
-// const wrapper = mount(UserAdd, {
-//     global: { plugins: [pinia] },
-//     props: {},
-// })
+const changeForm = (field: string, value: string) => {
+    switch (field) {
+        case 'firstName':
+            addForm.firstName.value = value
+            break
+        case 'lastName':
+            addForm.lastName.value = value
+            break
+        case 'jobTitle':
+            addForm.jobTitle.value = value
+            break
+    }
+}
 
 describe('User add', () => {
     it('should have initially empty form fields', () => {
@@ -26,7 +33,14 @@ describe('User add', () => {
     })
 
     it('should update certain form fields', () => {
-        const firstName = ''
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const jobTitle = 'Developer'
+        changeForm('firstName', firstName)
         expect(addForm.firstName.value).toBe(firstName)
+        changeForm('lastName', lastName)
+        expect(addForm.lastName.value).toBe(lastName)
+        changeForm('jobTitle', jobTitle)
+        expect(addForm.jobTitle.value).toBe(jobTitle)
     })
 })
