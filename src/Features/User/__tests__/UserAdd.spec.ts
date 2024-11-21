@@ -1,15 +1,16 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { mount } from '@vue/test-utils'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+import { mount, VueWrapper } from '@vue/test-utils'
 import UserAdd from '../UserAdd.vue'
+import { ComponentPublicInstance, Ref } from 'vue'
 
-let wrapper: any
-let form: any
+type TestWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
-const pinia = createPinia()
-setActivePinia(pinia)
+let wrapper: TestWrapper<Partial<any>>
+let form: Record<string, Ref<string, string>>
+let pinia: Pinia
 
-const API_PATH = 'http://example.com'
+const API_PATH = 'https://fake-api.com'
 const router = {
     push: vi.fn(),
 }
@@ -38,6 +39,8 @@ const submitForm = () => {
 
 describe('User add', () => {
     beforeAll(() => {
+        pinia = createPinia()
+        setActivePinia(pinia)
         wrapper = mount(UserAdd)
         form = wrapper.vm.addForm
     })

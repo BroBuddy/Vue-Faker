@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 import FormInput from '../../components/FormInput.vue'
 import Header from '../../components/Header.vue'
 import { useUserStore } from './UserStore'
@@ -8,7 +8,7 @@ import { API_PATH } from '../../constants'
 
 const userStore = useUserStore()
 
-const addForm = {
+const addForm: Record<string, Ref<string, string>> = {
     firstName: ref<string>(''),
     lastName: ref<string>(''),
     jobTitle: ref<string>(''),
