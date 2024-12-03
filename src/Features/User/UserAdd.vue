@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import FormInput from '../../components/FormInput.vue'
 import Header from '../../components/Header.vue'
 import { useUserStore } from './UserStore'
 import { useRouter } from 'vue-router'
 import { API_PATH } from '../../constants'
 
+const router = useRouter()
 const userStore = useUserStore()
 
 const addForm: Record<string, Ref<string, string>> = {
@@ -13,6 +14,12 @@ const addForm: Record<string, Ref<string, string>> = {
     lastName: ref<string>(''),
     jobTitle: ref<string>(''),
 }
+
+const isFirstNameValid = computed(() => addForm.firstName.value.trim() !== '')
+const isLastNameValid = computed(() => addForm.lastName.value.trim() !== '')
+const isJobTitleValid = computed(() => addForm.jobTitle.value.trim() !== '')
+
+const formIsValid = isFirstNameValid && isLastNameValid && isJobTitleValid
 
 const changeForm = (field: string, value: string) => {
     switch (field) {
@@ -29,7 +36,6 @@ const changeForm = (field: string, value: string) => {
 }
 
 const cancelForm = () => {
-    const router = useRouter()
     router?.push('/user')
 }
 
@@ -44,6 +50,7 @@ const submitForm = () => {
     }
 
     userStore.addUser(formBody)
+    cancelForm()
 }
 </script>
 
@@ -51,38 +58,35 @@ const submitForm = () => {
     <Header>Add new user</Header>
 
     <div class="px-10">
-        <form @submit.prevent="() => submitForm()">
+        <form @submit.prevent="submitForm">
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div class="sm:col-span-3">
                     <FormInput
-                        label="First name"
+                        label="First name *"
                         name="firstName"
-                        v-model="addForm.firstName.value"
                         :value="addForm.firstName.value"
                         @onChange="($event) => changeForm('firstName', $event)"
-                        placeholder=""
+                        placeholder="John"
                     />
                 </div>
 
                 <div class="sm:col-span-3">
                     <FormInput
-                        label="Last name"
+                        label="Last name *"
                         name="lastName"
-                        v-model="addForm.lastName.value"
                         :value="addForm.lastName.value"
-                        @onChange="($event) => changeForm($event, 'lastName')"
-                        placeholder=""
+                        @onChange="($event) => changeForm('lastName', $event)"
+                        placeholder="Doe"
                     />
                 </div>
 
                 <div class="sm:col-span-3">
                     <FormInput
-                        label="Job title"
+                        label="Job title *"
                         name="jobTitle"
-                        v-model="addForm.jobTitle.value"
                         :value="addForm.jobTitle.value"
-                        @onChange="($event) => changeForm($event, 'jobTitle')"
-                        placeholder=""
+                        @onChange="($event) => changeForm('jobTitle', $event)"
+                        placeholder="Developer"
                     />
                 </div>
             </div>
@@ -98,7 +102,10 @@ const submitForm = () => {
 
                 <button
                     type="submit"
-                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    :disabled="!formIsValid"
+                    :class="`rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+                        ${formIsValid ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-600 hover:bg-gray-500'}
+                    `"
                 >
                     Save
                 </button>
